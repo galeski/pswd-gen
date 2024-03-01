@@ -10,7 +10,6 @@
         background-color: #f7f7f7;
         align-items: center;
     }
-  
     .pswd-box {
         margin: 20px;
         padding: 10px;
@@ -19,7 +18,7 @@
         text-align: center;
         border-radius: 5px;
     }
-    button {
+    .create {
         background-color: #007bff;
         color: #fff;
         border: none;
@@ -36,44 +35,62 @@
 </style>
 </head>
 <body>
-  <h2>Password Generator</h2>
-  
-  <div class="pswd-box">
-      Click create to generate password
-  </div>
-  
-  <label>Length:</label>
-  <input type="number" id="lengthInput" value="14"><br>
-  
-  <label>Ambiguous:</label>
-  <input type="checkbox" id="ambiguousInput"><br>
-  
-  <label>Include Numbers:</label>
-  <input type="checkbox" id="numberInput" checked><br>
-  
-  <label>Minimum Number:</label>
-  <input type="number" id="minNumberInput" value="1"><br>
-  
-  <label>Include Uppercase:</label>
-  <input type="checkbox" id="uppercaseInput" checked><br>
-  
-  <label>Minimum Uppercase:</label>
-  <input type="number" id="minUppercaseInput" value="0"><br>
-  
-  <label>Include Lowercase:</label>
-  <input type="checkbox" id="lowercaseInput" checked><br>
-  
-  <label>Minimum Lowercase:</label>
-  <input type="number" id="minLowercaseInput" value="0"><br>
-  
-  <label>Include Special Characters:</label>
-  <input type="checkbox" id="specialInput"><br>
-  
-  <label>Minimum Special Characters:</label>
-  <input type="number" id="minSpecialInput" value="1"><br>
-  
-  <button id="createBtn">Create</button>
+
+<h2>Password Generator</h2>
+<button class="copy-btn" id="copyBtn">Copy</button>
+<div class="pswd-box">
+    Click create to generate password
+</div>
+
+
+<label>Length:</label>
+<input type="number" id="lengthInput" value="14"><br>
+
+<label>Ambiguous:</label>
+<input type="checkbox" id="ambiguousInput"><br>
+
+<label>Include Numbers:</label>
+<input type="checkbox" id="numberInput" checked><br>
+
+<label>Minimum Number:</label>
+<input type="number" id="minNumberInput" value="1"><br>
+
+<label>Include Uppercase:</label>
+<input type="checkbox" id="uppercaseInput" checked><br>
+
+<label>Minimum Uppercase:</label>
+<input type="number" id="minUppercaseInput" value="0"><br>
+
+<label>Include Lowercase:</label>
+<input type="checkbox" id="lowercaseInput" checked><br>
+
+<label>Minimum Lowercase:</label>
+<input type="number" id="minLowercaseInput" value="0"><br>
+
+<label>Include Special Characters:</label>
+<input type="checkbox" id="specialInput"><br>
+
+<label>Minimum Special Characters:</label>
+<input type="number" id="minSpecialInput" value="1"><br>
+
+<button class="create" id="createBtn">Create</button>
+
 <script>
+    function copyPasswordToClipboard() {
+        var passwordText = document.querySelector('.pswd-box').innerText;
+        navigator.clipboard.writeText(passwordText)
+            .then(() => {
+                alert("Password copied to clipboard!");
+            })
+            .catch(err => {
+                console.error('Failed to copy password: ', err);
+            });
+    }
+
+    document.getElementById("copyBtn").addEventListener("click", function() {
+        copyPasswordToClipboard();
+    });
+    
     document.getElementById("createBtn").addEventListener("click", function() {
         var options = {
          length: parseInt(document.getElementById("lengthInput").value),
