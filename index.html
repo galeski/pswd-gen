@@ -153,6 +153,7 @@
                 <input type="checkbox" id="uppercaseInput" checked><label>&nbsp;Uppercase</label></br>
                 <input type="checkbox" id="lowercaseInput" checked><label>&nbsp;Lowercase</label></br>
                 <input type="checkbox" id="specialInput"><label>&nbsp;Special characters</label></br>
+                <input type="checkbox" id="secureInput"><label>&nbsp;Secure random</label></br>
             </div>
         </div>
 
@@ -191,7 +192,6 @@
         });
 
         document.getElementById("createBtn").addEventListener("click", function () {
-            console.log("dupa")
             const options = {
                 length: parseInt(document.getElementById("lengthInput").value),
                 ambiguous: document.getElementById("ambiguousInput").checked,
@@ -202,7 +202,8 @@
                 lowercase: document.getElementById("lowercaseInput").checked,
                 minLowercase: parseInt(document.getElementById("minLowercaseInput").value),
                 special: document.getElementById("specialInput").checked,
-                minSpecial: parseInt(document.getElementById("minSpecialInput").value)
+                minSpecial: parseInt(document.getElementById("minSpecialInput").value),
+                secureRandom: document.getElementById("secureInput").checked,
             }
             generatePasswordBox(options);
         });
@@ -229,6 +230,7 @@
                 wordSeparator: "-",
                 capitalize: false,
                 includeNumber: false,
+                secureRandom: false
             };
 
             options = options || {};
@@ -337,7 +339,13 @@
                         break;
                 }
 
-                const randomCharIndex = getRandomInt(0, positionChars.length - 1);
+                let randomCharIndex;
+                if (o.secureRandom) {
+                    randomCharIndex = getRandomCryptoInt(0, positionChars.length - 1);
+                } else {
+                    randomCharIndex = getRandomInt(0, positionChars.length - 1);
+                }
+
                 password += positionChars.charAt(randomCharIndex);
             }
 
@@ -355,6 +363,18 @@
             min = Math.ceil(min);
             max = Math.floor(max);
             return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function getRandomCryptoInt(min, max) {
+            const randomBuffer = new Uint32Array(1);
+
+            window.crypto.getRandomValues(randomBuffer);
+
+            let randomNumber = randomBuffer[0] / (0xffffffff + 1);
+
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(randomNumber * (max - min + 1)) + min;
         }
     </script>
 
